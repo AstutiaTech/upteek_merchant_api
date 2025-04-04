@@ -1,8 +1,22 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from typing import Optional, Any
 
+class RegisterRequest(BaseModel):
+    email: EmailStr
+    username: str
+    phone_number: str
+    password: str
+    first_name: str
+    other_name: Optional[str] = None
+    last_name: str
+    merchant_name: str
+    fbt: Optional[str] = None
+    
+    class Config:
+        orm_mode = True
+
 class LoginEmailRequest(BaseModel):
-    email: str
+    email: EmailStr
     password: str
     fbt: Optional[str] = None
     

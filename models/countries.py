@@ -72,7 +72,7 @@ def get_single_country_by_id(db: Session, id: int=0):
     return db.query(Country).filter_by(id = id).first()
 
 def get_single_country_by_code(db: Session, code: str=None):
-    return db.query(Country).filter_by(code = code).first()
+    return db.query(Country).filter(or_(Country.code == code, Country.code_two == code)).first()
 
 def get_countries(db: Session):
     return db.query(Country).filter(Country.deleted_at == None).order_by(desc(Country.id))

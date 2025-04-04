@@ -1,6 +1,6 @@
 from typing import Dict
 from fastapi import Request
-from database.model import get_single_user_by_email_and_user_type, get_single_user_by_phone_number_and_user_type, get_single_user_by_username_user_type, get_single_user_by_any_main_details, get_single_profile_by_user_id, get_single_setting_by_user_id, update_user, create_token, get_latest_user_token_by_type, update_token_by_user_id_and_token_type, update_token_email, get_latest_user_token_by_type_and_status, get_single_user_by_id, update_token
+from database.model import get_single_user_by_email_and_user_type, get_single_user_by_phone_number_and_user_type, get_single_user_by_username_user_type, get_single_user_by_any_main_details, get_single_profile_by_user_id, get_single_setting_by_user_id, update_user, create_token, get_latest_user_token_by_type, update_token_by_user_id_and_token_type, update_token_email, get_latest_user_token_by_type_and_status, get_single_user_by_id, update_token, get_single_country_by_code, registration_unique_field_check, create_user_with_relevant_rows
 from modules.utils.net import get_ip_info, process_phone_number
 from modules.utils.tools import process_schema_dictionary
 from modules.utils.auth import AuthHandler, get_next_few_minutes, check_if_time_as_pass_now
@@ -14,9 +14,56 @@ from settings.constants import USER_TYPES
 
 auth = AuthHandler()
 
+def register_user(db: Session, username: str = None, email: str = None, phone_number: str = None, password: str = None, first_name: str = None, other_name: str = None, last_name: str = None, merchant_name: str = None, fbt: str=None):
+    country = get_single_country_by_code(db=db, code="NG")
+    username = str(username).strip().replace(" ", "")
+    processed_phone_number = process_phone_number(phone_number=phone_number, country_code=country.code)
+    new_phone = None
+    if processed_phone_number['status'] == True:
+        new_phone = processed_phone_number['phone_number']
+    else:
+        new_phone = phone_number
+    check = registration_unique_field_check(db=db, phone_number=new_phone, username=username, email=email, user_type=USER_TYPES['merchant']['num'])
+    if check['status'] == False:
+        return {
+            'status': False,
+            'message': check['message'],
+            'data': None,
+        }
+    else:
+        user = create_user_with_relevant_rows(db=db, country_id=country.id, username=username, email=email, phone_number=new_phone, password=password, device_token=fbt, user_type=USER_TYPES['merchant']['num'], role=USER_TYPES['merchant']['roles']['super']['num'], first_name=first_name, other_name=other_name, last_name=last_name, is_merchant=True, merchant_name=merchant_name)
+        payload = {
+            'id': user.id,
+            'country_id': user.country_id,
+            'username': user.username,
+            'phone_number': user.phone_number,
+            'user_type': user.user_type,
+            'role': user.role,
+        }
+        token = auth.encode_token(user=payload, device_token=fbt)
+        profile = get_single_profile_by_user_id(db=db, user_id=user.id)
+        setting = get_single_setting_by_user_id(db=db, user_id=user.id)
+        data = {
+            'access_token': token,
+            'id': user.id,
+            'username': user.username,
+            'phone_number': user.phone_number,
+            'email': user.email,
+            'user_type': user.user_type,
+            'role': user.role,
+            'profile': profile,
+            'setting': setting,
+        }
+        return {
+            'status': True,
+            'message': 'Login Success',
+            'data': data,
+        }
+    
+
 def login_with_email(db: Session, email: str=None, password: str=None, fbt: str=None):
     try:
-        user = get_single_user_by_email_and_user_type(db=db, email=email, user_type=USER_TYPES['admin']['num'])
+        user = get_single_user_by_email_and_user_type(db=db, email=email, user_type=USER_TYPES['merchant']['num'])
         if user is None:
             return {
                 'status': False,
@@ -95,7 +142,7 @@ def send_email_token(db: Session, email: str=None):
     }
     
 def send_user_email_token(db: Session, email: str=None):
-    user = get_single_user_by_email_and_user_type(db=db, email=email, user_type=USER_TYPES['admin']['num'])
+    user = get_single_user_by_email_and_user_type(db=db, email=email, user_type=USER_TYPES['merchant']['num'])
     if user is None:
         return {
             'status': False,
@@ -114,7 +161,7 @@ def send_user_email_token(db: Session, email: str=None):
         }
 
 def finalise_passwordless_login(db: Session, email: str=None, token_str: str=None, fbt: str=None):
-    user = get_single_user_by_email_and_user_type(db=db, email=email, user_type=USER_TYPES['admin']['num'])
+    user = get_single_user_by_email_and_user_type(db=db, email=email, user_type=USER_TYPES['merchant']['num'])
     if user is None:
         return {
             'status': False,
@@ -195,7 +242,7 @@ def finalise_passwordless_login(db: Session, email: str=None, token_str: str=Non
             }
 
 def verify_email_token(db: Session, email: str=None, token_str: str=None):
-    user = get_single_user_by_email_and_user_type(db=db, email=email, user_type=USER_TYPES['admin']['num'])
+    user = get_single_user_by_email_and_user_type(db=db, email=email, user_type=USER_TYPES['merchant']['num'])
     if user is None:
         return {
             'status': False,

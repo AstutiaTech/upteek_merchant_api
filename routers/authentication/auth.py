@@ -1,13 +1,18 @@
 from fastapi import APIRouter, Request, Depends, HTTPException
 from database.db import get_session, get_db
 from sqlalchemy.orm import Session
-from modules.authentication.auth import auth, login_with_email, send_email_token, send_user_email_token, finalise_passwordless_login, verify_email_token, get_user_details
-from database.schema import ErrorResponse, PlainResponse, PlainResponseData, LoginEmailRequest, SendEmailTokenRequest, FinalisePasswordLessRequest, MainAuthResponseModel, UserResponseModel, VerifyEmailTokenRequest
+from modules.authentication.auth import auth, register_user, login_with_email, send_email_token, send_user_email_token, finalise_passwordless_login, verify_email_token, get_user_details
+from database.schema import ErrorResponse, PlainResponse, PlainResponseData, RegisterRequest, LoginEmailRequest, SendEmailTokenRequest, FinalisePasswordLessRequest, MainAuthResponseModel, UserResponseModel, VerifyEmailTokenRequest
 
 router = APIRouter(
     prefix="/auth",
     tags=["auth"]
 )
+
+@router.post("/register", response_model=MainAuthResponseModel, responses={404: {"model": ErrorResponse}, 401: {"model": ErrorResponse}, 403: {"model": ErrorResponse}})
+async def register(request: Request, fields: RegisterRequest, db: Session = Depends(get_db)):
+    req = register_user(db=db, email=fields.email, username=fields.username, phone_number=fields.phone_number, password=fields.password, first_name=fields.first_name, other_name=fields.other_name, last_name=fields.last_name, merchant_name=fields.merchant_name, fbt=fields.fbt)
+    return req
 
 @router.post("/login_email", response_model=MainAuthResponseModel, responses={404: {"model": ErrorResponse}, 401: {"model": ErrorResponse}, 403: {"model": ErrorResponse}})
 async def login_email(request: Request, fields: LoginEmailRequest, db: Session = Depends(get_db)):
