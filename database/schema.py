@@ -1,4 +1,5 @@
 from schemas.auth import RegisterRequest, LoginEmailRequest, SendEmailTokenRequest, FinalisePasswordLessRequest, VerifyEmailTokenRequest
+from schemas.inv import CreateCategoryRequest, UpdateCategoryRequest, CategoryModel, CategoryResponse
 from schemas.pro import UpdateBasicProfileRequestModel, UpdatePasswordRequestModel, UpdateSettingsRequestModel
 from schemas.resp import ErrorResponse, PlainResponse, PlainResponseData
 from schemas.user import AuthResponseModel, MainAuthResponseModel, UserDetailsResponseModel, UserResponseModel

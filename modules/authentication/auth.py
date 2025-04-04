@@ -35,6 +35,7 @@ def register_user(db: Session, username: str = None, email: str = None, phone_nu
         payload = {
             'id': user.id,
             'country_id': user.country_id,
+            'merchant_id': user.merchant_id,
             'username': user.username,
             'phone_number': user.phone_number,
             'user_type': user.user_type,
@@ -46,6 +47,7 @@ def register_user(db: Session, username: str = None, email: str = None, phone_nu
         data = {
             'access_token': token,
             'id': user.id,
+            'merchant_id': user.merchant_id,
             'username': user.username,
             'phone_number': user.phone_number,
             'email': user.email,
@@ -92,6 +94,7 @@ def login_with_email(db: Session, email: str=None, password: str=None, fbt: str=
                     }
                 payload = {
                     'id': user.id,
+                    'merchant_id': user.merchant_id,
                     'country_id': user.country_id,
                     'username': user.username,
                     'phone_number': user.phone_number,
@@ -108,6 +111,7 @@ def login_with_email(db: Session, email: str=None, password: str=None, fbt: str=
                 data = {
                     'access_token': token,
                     'id': user.id,
+                    'merchant_id': user.merchant_id,
                     'username': user.username,
                     'phone_number': user.phone_number,
                     'email': user.email,
@@ -210,6 +214,7 @@ def finalise_passwordless_login(db: Session, email: str=None, token_str: str=Non
                 }
             payload = {
                 'id': user.id,
+                'merchant_id': user.merchant_id,
                 'country_id': user.country_id,
                 'username': user.username,
                 'phone_number': user.phone_number,
@@ -227,6 +232,7 @@ def finalise_passwordless_login(db: Session, email: str=None, token_str: str=Non
             data = {
                 'access_token': access_token,
                 'id': user.id,
+                'merchant_id': user.merchant_id,
                 'username': user.username,
                 'phone_number': user.phone_number,
                 'email': user.email,
@@ -291,6 +297,7 @@ def get_user_details(db: Session, user_id: int=0):
         setting = get_single_setting_by_user_id(db=db, user_id=user.id)
         data = {
             'id': user.id,
+            'merchant_id': user.merchant_id,
             'username': user.username,
             'phone_number': user.phone_number,
             'email': user.email,

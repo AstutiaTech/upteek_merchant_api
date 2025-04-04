@@ -38,6 +38,7 @@ class SettingModel(BaseModel):
 
 class AuthResponseModel(BaseModel):
     id: int
+    merchant_id: int
     access_token: Optional[str] = None
     username: Optional[str] = None
     phone_number: Optional[str] = None
@@ -60,6 +61,7 @@ class MainAuthResponseModel(BaseModel):
 
 class UserDetailsResponseModel(BaseModel):
     id: int
+    merchant_id: int
     username: Optional[str] = None
     phone_number: Optional[str] = None
     email: Optional[str] = None
