@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Request, Depends, HTTPException
 from database.db import get_session, get_db
 from sqlalchemy.orm import Session
-from modules.authentication.auth import auth, register_user, login_with_email, send_email_token, send_user_email_token, finalise_passwordless_login, verify_email_token, get_user_details
-from database.schema import ErrorResponse, PlainResponse, PlainResponseData, RegisterRequest, LoginEmailRequest, SendEmailTokenRequest, FinalisePasswordLessRequest, MainAuthResponseModel, UserResponseModel, VerifyEmailTokenRequest
+from modules.authentication.auth import auth, register_user, login_with_email, send_email_token, send_user_email_token, finalise_passwordless_login, verify_email_token, get_user_details, check_if_phone_number_exists, check_if_username_exists, check_if_email_exists
+from database.schema import ErrorResponse, PlainResponse, PlainResponseData, RegisterRequest, LoginEmailRequest, SendEmailTokenRequest, FinalisePasswordLessRequest, MainAuthResponseModel, UserResponseModel, VerifyEmailTokenRequest, CheckPhoneNumberRequest, CheckUsernameRequest, CheckEmailRequest
 
 router = APIRouter(
     prefix="/auth",
@@ -43,3 +43,17 @@ async def verify_token_email(request: Request, fields: VerifyEmailTokenRequest, 
 async def details(request: Request, user=Depends(auth.auth_wrapper), db: Session = Depends(get_db)):
     return get_user_details(db=db, user_id=user['id'])
 
+@router.post("/check_phone_number", response_model=PlainResponse, responses={404: {"model": ErrorResponse}, 401: {"model": ErrorResponse}, 403: {"model": ErrorResponse}})
+async def check_phone_number(request: Request, fields: CheckPhoneNumberRequest, db: Session = Depends(get_db)):
+    req = check_if_phone_number_exists(db=db, phone_number=fields.phone_number)
+    return req
+
+@router.post("/check_username", response_model=PlainResponse, responses={404: {"model": ErrorResponse}, 401: {"model": ErrorResponse}, 403: {"model": ErrorResponse}})
+async def check_username(request: Request, fields: CheckUsernameRequest, db: Session = Depends(get_db)):
+    req = check_if_username_exists(db=db, username=fields.username)
+    return req
+
+@router.post("/check_email", response_model=PlainResponse, responses={404: {"model": ErrorResponse}, 401: {"model": ErrorResponse}, 403: {"model": ErrorResponse}})
+async def check_email(request: Request, fields: CheckEmailRequest, db: Session = Depends(get_db)):
+    req = check_if_email_exists(db=db, email=fields.email)
+    return req

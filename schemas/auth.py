@@ -2,7 +2,7 @@ from pydantic import BaseModel, EmailStr
 from typing import Optional, Any
 
 class RegisterRequest(BaseModel):
-    email: EmailStr
+    email: str
     username: str
     phone_number: str
     password: str
@@ -44,3 +44,20 @@ class VerifyEmailTokenRequest(BaseModel):
     class Config:
         orm_mode = True
 
+class CheckPhoneNumberRequest(BaseModel):
+    phone_number: str
+    
+    class Config:
+        orm_mode = True
+
+class CheckUsernameRequest(BaseModel):
+    username: str
+    
+    class Config:
+        orm_mode = True
+
+class CheckEmailRequest(BaseModel):
+    email: str
+    
+    class Config:
+        orm_mode = True

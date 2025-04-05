@@ -13,7 +13,7 @@ router = APIRouter(
 @router.post("/update", response_model=PlainResponse, responses={404: {"model": ErrorResponse}, 401: {"model": ErrorResponse}, 403: {"model": ErrorResponse}})
 async def update(request: Request, fields: UpdateBasicProfileRequestModel, user=Depends(auth.auth_wrapper), db: Session = Depends(get_db)):
     values = fields.model_dump()
-    req = update_user_profile_details(db=db, user_id=user['id'], values=values)
+    req = update_user_profile_details(db=db, user_id=user['id'], merchant_id=user['merchant_id'], values=values)
     return req
 
 @router.post("/update_password", response_model=PlainResponse, responses={404: {"model": ErrorResponse}, 401: {"model": ErrorResponse}, 403: {"model": ErrorResponse}})
