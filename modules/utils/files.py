@@ -1,18 +1,10 @@
-import string 
-import random
-import base64
 from fastapi import UploadFile
 from base64 import b64decode
 from datetime import datetime
-from urllib.parse import urlparse
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 import requests
-import os
-import shutil
-import gzip
-from PIL import Image
 from settings.config import load_env_config
 
 config = load_env_config()
