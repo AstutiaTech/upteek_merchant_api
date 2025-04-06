@@ -1,6 +1,19 @@
 from typing import Optional
 from pydantic import BaseModel
 
+class UserModel(BaseModel):
+    id: int
+    merchant_id: int
+    username: Optional[str] = None
+    phone_number: Optional[str] = None
+    email: Optional[str] = None
+    user_type: Optional[int] = 0
+    role: Optional[int] = 0
+    is_new_user: Optional[bool] = None
+    
+    class Config:
+        orm_mode = True
+
 class ProfileModel(BaseModel):
     id: int
     user_id: int
@@ -37,15 +50,8 @@ class SettingModel(BaseModel):
         orm_mode = True
 
 class AuthResponseModel(BaseModel):
-    id: int
-    merchant_id: int
     access_token: Optional[str] = None
-    username: Optional[str] = None
-    phone_number: Optional[str] = None
-    email: Optional[str] = None
-    user_type: Optional[int] = 0
-    role: Optional[int] = 0
-    is_new_user: Optional[bool] = None
+    user: Optional[UserModel] = None
     profile: Optional[ProfileModel] = None
     setting: Optional[SettingModel] = None
     
@@ -61,13 +67,7 @@ class MainAuthResponseModel(BaseModel):
         orm_mode = True
 
 class UserDetailsResponseModel(BaseModel):
-    id: int
-    merchant_id: int
-    username: Optional[str] = None
-    phone_number: Optional[str] = None
-    email: Optional[str] = None
-    user_type: Optional[int] = 0
-    role: Optional[int] = 0
+    user: Optional[UserModel] = None
     profile: Optional[ProfileModel] = None
     setting: Optional[SettingModel] = None
     

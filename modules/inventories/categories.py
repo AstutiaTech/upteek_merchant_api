@@ -5,11 +5,11 @@ from modules.utils.tools import process_schema_dictionary
 from fastapi_pagination.ext.sqlalchemy import paginate
 
 def create_new_category(db: Session, user_id: int=0, merchant_id: int=0, category_id: int=0, name: str=None, description: str=None):
-    data = create_category(db=db, merchant_id=merchant_id, category_id=category_id, name=name, description=description, status=1, created_by=user_id)
+    category = create_category(db=db, merchant_id=merchant_id, category_id=category_id, name=name, description=description, status=1, created_by=user_id)
     return {
         'status': True,
         'message': 'Success',
-        'data': data
+        'data': category
     }
 
 def update_existing_category(db: Session, id: int=0, values: Dict={}):

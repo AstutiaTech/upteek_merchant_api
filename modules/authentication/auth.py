@@ -46,14 +46,16 @@ def register_user(db: Session, username: str = None, email: str = None, phone_nu
         setting = get_single_setting_by_user_id(db=db, user_id=user.id)
         data = {
             'access_token': token,
-            'id': user.id,
-            'merchant_id': user.merchant_id,
-            'username': user.username,
-            'phone_number': user.phone_number,
-            'email': user.email,
-            'user_type': user.user_type,
-            'role': user.role,
-            'is_new_user': True,
+            'user': {
+                'id': user.id,
+                'merchant_id': user.merchant_id,
+                'username': user.username,
+                'phone_number': user.phone_number,
+                'email': user.email,
+                'user_type': user.user_type,
+                'role': user.role,
+                'is_new_user': True,
+            },
             'profile': profile,
             'setting': setting,
         }
@@ -111,14 +113,16 @@ def login_with_email(db: Session, email: str=None, password: str=None, fbt: str=
                 setting = get_single_setting_by_user_id(db=db, user_id=user.id)
                 data = {
                     'access_token': token,
-                    'id': user.id,
-                    'merchant_id': user.merchant_id,
-                    'username': user.username,
-                    'phone_number': user.phone_number,
-                    'email': user.email,
-                    'user_type': user.user_type,
-                    'role': user.role,
-                    'is_new_user': False,
+                    'user': {
+                        'id': user.id,
+                        'merchant_id': user.merchant_id,
+                        'username': user.username,
+                        'phone_number': user.phone_number,
+                        'email': user.email,
+                        'user_type': user.user_type,
+                        'role': user.role,
+                        'is_new_user': False,
+                    },
                     'profile': profile,
                     'setting': setting,
                 }
@@ -314,14 +318,16 @@ def finalise_passwordless_login(db: Session, email: str=None, token_str: str=Non
         setting = get_single_setting_by_user_id(db=db, user_id=user.id)
         data = {
             'access_token': access_token,
-            'id': user.id,
-            'merchant_id': user.merchant_id,
-            'username': user.username,
-            'phone_number': user.phone_number,
-            'email': user.email,
-            'user_type': user.user_type,
-            'role': user.role,
-            'is_new_user': is_new_user,
+            'user': {
+                'id': user.id,
+                'merchant_id': user.merchant_id,
+                'username': user.username,
+                'phone_number': user.phone_number,
+                'email': user.email,
+                'user_type': user.user_type,
+                'role': user.role,
+                'is_new_user': is_new_user,
+            },
             'profile': profile,
             'setting': setting,
         }
@@ -381,13 +387,16 @@ def get_user_details(db: Session, user_id: int=0):
         profile = get_single_profile_by_user_id(db=db, user_id=user.id)
         setting = get_single_setting_by_user_id(db=db, user_id=user.id)
         data = {
-            'id': user.id,
-            'merchant_id': user.merchant_id,
-            'username': user.username,
-            'phone_number': user.phone_number,
-            'email': user.email,
-            'user_type': user.user_type,
-            'role': user.role,
+            'user': {
+                'id': user.id,
+                'merchant_id': user.merchant_id,
+                'username': user.username,
+                'phone_number': user.phone_number,
+                'email': user.email,
+                'user_type': user.user_type,
+                'role': user.role,
+                'is_new_user': False,
+            },
             'profile': profile,
             'setting': setting,
         }
