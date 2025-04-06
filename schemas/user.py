@@ -45,6 +45,7 @@ class AuthResponseModel(BaseModel):
     email: Optional[str] = None
     user_type: Optional[int] = 0
     role: Optional[int] = 0
+    is_new_user: Optional[bool] = None
     profile: Optional[ProfileModel] = None
     setting: Optional[SettingModel] = None
     

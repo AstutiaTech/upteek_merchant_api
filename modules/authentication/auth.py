@@ -53,6 +53,7 @@ def register_user(db: Session, username: str = None, email: str = None, phone_nu
             'email': user.email,
             'user_type': user.user_type,
             'role': user.role,
+            'is_new_user': True,
             'profile': profile,
             'setting': setting,
         }
@@ -117,6 +118,7 @@ def login_with_email(db: Session, email: str=None, password: str=None, fbt: str=
                     'email': user.email,
                     'user_type': user.user_type,
                     'role': user.role,
+                    'is_new_user': False,
                     'profile': profile,
                     'setting': setting,
                 }
@@ -275,10 +277,12 @@ def finalise_passwordless_login(db: Session, email: str=None, token_str: str=Non
                 'message': 'Token has expired',
                 'data': None
             }
+        is_new_user = False
         country = get_single_country_by_code(db=db, code="NG")
         user = get_single_user_by_email_and_user_type(db=db, email=email, user_type=USER_TYPES['merchant']['num'])
         if user is None:
             user = create_user_with_relevant_rows(db=db, country_id=country.id, email=email, device_token=fbt, user_type=USER_TYPES['merchant']['num'], role=USER_TYPES['merchant']['roles']['super']['num'], is_merchant=True)
+            is_new_user = True
         if user.status == 0:
             return {
                 'status': False,
@@ -317,6 +321,7 @@ def finalise_passwordless_login(db: Session, email: str=None, token_str: str=Non
             'email': user.email,
             'user_type': user.user_type,
             'role': user.role,
+            'is_new_user': is_new_user,
             'profile': profile,
             'setting': setting,
         }
