@@ -29,7 +29,7 @@ def get_notification_string(title: str=None, body: str=None, foot: str=None):
     with open(template_path, "r", encoding="utf-8") as file:
         html = file.read()
     if html != "":
-        html = html.replace("@title@", title)
+        html = html.replace("@subject@", title)
         html = html.replace("@body@", body)
         html = html.replace("@foot@", foot)
     return html
