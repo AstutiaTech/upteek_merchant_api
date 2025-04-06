@@ -32,7 +32,7 @@ async def delete(request: Request, user=Depends(auth.auth_wrapper), db: Session 
 async def get_all(request: Request, user=Depends(auth.auth_wrapper), db: Session = Depends(get_session)):
     filters = request.query_params._dict
     filters['merchant_id'] = user['merchant_id']
-    return retrieve_categories(db=db)
+    return retrieve_categories(db=db, filters=filters)
 
 @router.get("/get_single/{category_id}", response_model=CategoryResponse, responses={404: {"model": ErrorResponse}, 401: {"model": ErrorResponse}, 403: {"model": ErrorResponse}})
 async def get_single(request: Request, user=Depends(auth.auth_wrapper), db: Session = Depends(get_session), category_id: int = 0):

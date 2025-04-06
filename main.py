@@ -9,6 +9,7 @@ import sys, traceback
 
 from routers.authentication import auth
 from routers.user import profile
+from routers.media import file
 from routers.inventory import category
 
 #system routes
@@ -17,9 +18,11 @@ from routers import seed
 # Main app section here
 app = FastAPI(title="Upteek Merchant")
 
+app.include_router(seed.router)
+
 app.include_router(auth.router)
 app.include_router(profile.router)
-app.include_router(seed.router)
+app.include_router(file.router)
 app.include_router(category.router)
 
 #Test routers

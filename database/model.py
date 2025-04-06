@@ -22,6 +22,7 @@ from models.general_ledger_accounts import GeneralLedgerAccount, create_general_
 from models.l_g_a_s import LGA, create_lga, update_lga, delete_lga, force_delete_lga, get_single_lga_by_id, get_lgas, get_lgas_by_state_id
 from models.loan_applications import LoanApplication, create_loan_application, update_loan_application, delete_loan_application, force_delete_loan_application, get_single_loan_application_by_id
 from models.loans import Loan, create_loan, update_loan, delete_loan, force_delete_loan, get_single_loan_by_id, get_loans
+from models.media_pivots import Medium_Pivot, create_medium_pivot, update_medium_pivot, delete_medium_pivot, force_delete_medium_pivot, get_medium_pivot, get_medium_pivot_by_medium_id, get_medium_pivot_by_mediumable_type_and_mediumable_id, get_medium_pivot_by_mediumable_type_and_mediumable_id_and_status, get_media_pivots
 from models.media import Medium, create_medium, update_medium, delete_medium, force_delete_medium, get_single_medium_by_id, get_media, get_media_by_mediumable_type, get_mediumable
 from models.merchant_categories import MerchantCategory, create_merchant_category, update_merchant_category, delete_merchant_category, force_delete_merchant_category, get_single_merchant_category_by_id, get_merchant_categories, get_merchant_categories_by_industry_id
 from models.merchant_industries import MerchantIndustry, create_merchant_industry, update_merchant_industry, delete_merchant_industry, force_delete_merchant_industry, get_single_merchant_industry_by_id, get_merchant_industries
