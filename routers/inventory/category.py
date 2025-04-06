@@ -7,8 +7,8 @@ from sqlalchemy.orm import Session
 from fastapi_pagination import LimitOffsetPage, Page
 
 router = APIRouter(
-    prefix="/inventory/category",
-    tags=["inventory"]
+    prefix="/inventory/categories",
+    tags=["inventory_category"]
 )
 
 @router.post("/create", response_model=CategoryResponse, responses={404: {"model": ErrorResponse}, 401: {"model": ErrorResponse}, 403: {"model": ErrorResponse}})
