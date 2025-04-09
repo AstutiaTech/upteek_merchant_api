@@ -56,7 +56,7 @@ app.add_middleware(
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World! Upteek Admin"}
+    return {"message": "Hello World! Upteek Merchant"}
 
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):

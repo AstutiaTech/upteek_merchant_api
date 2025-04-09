@@ -1,4 +1,5 @@
 from typing import Optional
+from fastapi import Form
 from pydantic import BaseModel
 
 class UpdateBasicProfileRequestModel(BaseModel):
@@ -18,8 +19,12 @@ class UpdateBasicProfileRequestModel(BaseModel):
     merchant_email: Optional[str] = None
     merchant_phone_number: Optional[str] = None
     
-    class Config:
-        orm_mode = True
+    # class Config:
+    #     orm_mode = True
+
+def parse_update_basic_profile_payload(payload: str = Form(...)) -> UpdateBasicProfileRequestModel:
+    return UpdateBasicProfileRequestModel.model_validate_json(payload)
+
 class UpdatePasswordRequestModel(BaseModel):
     password: str
     old_password: str
