@@ -10,6 +10,8 @@ class UpdateBasicProfileRequestModel(BaseModel):
     date_of_birth: Optional[str] = None
     gender: Optional[str] = None
     bio: Optional[str] = None
+    merchant_category_id: Optional[int] = None
+    merchant_currency_id: Optional[int] = None
     merchant_name: Optional[str] = None
     merchant_trading_name: Optional[str] = None
     merchant_description: Optional[str] = None

@@ -29,8 +29,18 @@ async def delete(request: Request, user=Depends(auth.auth_wrapper), db: Session 
 
 
 @router.get("/get_all", response_model=Page[CategoryModel], responses={404: {"model": ErrorResponse}, 401: {"model": ErrorResponse}, 403: {"model": ErrorResponse}})
-async def get_all(request: Request, user=Depends(auth.auth_wrapper), db: Session = Depends(get_session)):
-    filters = request.query_params._dict
+async def get_all(request: Request, user=Depends(auth.auth_wrapper), db: Session = Depends(get_session), category_id: int = None, name: str = None, status: int = None, created_by: int = None, authorized_by: int = None):
+    filters = {}
+    if category_id is not None and category_id > 0:
+        filters['category_id'] = category_id
+    if name is not None:
+        filters['name'] = name
+    if status is not None and status > 0:
+        filters['status'] = status
+    if created_by is not None and created_by > 0:
+        filters['created_by'] = created_by
+    if authorized_by is not None and authorized_by > 0:
+        filters['authorized_by'] = authorized_by
     filters['merchant_id'] = user['merchant_id']
     return retrieve_categories(db=db, filters=filters)
 

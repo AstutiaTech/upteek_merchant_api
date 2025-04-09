@@ -64,8 +64,11 @@ def force_delete_merchant_category(db: Session, id: int=0, commit: bool=False):
 def get_single_merchant_category_by_id(db: Session, id: int=0):
     return db.query(MerchantCategory).filter_by(id = id).first()
 
-def get_merchant_categories(db: Session):
-    return db.query(MerchantCategory).filter(MerchantCategory.deleted_at == None).order_by(desc(MerchantCategory.id))
+def get_merchant_categories(db: Session, filters: Dict={}):
+    query = db.query(MerchantCategory).filter(MerchantCategory.deleted_at == None)
+    if 'industry_id' in filters:
+        query = query.filter_by(industry_id = filters['industry_id'])
+    return query.order_by(desc(MerchantCategory.id))
 
 def get_merchant_categories_by_industry_id(db: Session, industry_id: int=0):
     return db.query(MerchantCategory).filter_by(industry_id = industry_id).filter(MerchantCategory.deleted_at == None).order_by(desc(MerchantCategory.id))

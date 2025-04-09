@@ -66,8 +66,11 @@ def force_delete_state(db: Session, id: int=0, commit: bool=False):
 def get_single_state_by_id(db: Session, id: int=0):
     return db.query(State).filter_by(id = id).first()
 
-def get_states(db: Session):
-    return db.query(State).filter(State.deleted_at == None).order_by(desc(State.id))
+def get_states(db: Session, filters: Dict={}):
+    query = db.query(State).filter(State.deleted_at == None)
+    if 'country_id' in filters:
+        query = query.filter_by(country_id = filters['country_id'])
+    return query.order_by(desc(State.id))
 
 def get_states_by_country_id(db: Session, country_id: int=0):
     return db.query(State).filter(and_(State.deleted_at == None, State.country_id == country_id)).order_by(desc(State.id))

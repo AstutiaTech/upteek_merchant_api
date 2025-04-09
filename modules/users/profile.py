@@ -24,6 +24,10 @@ def update_user_profile_details(db: Session, user_id: int=0, merchant_id: int=0,
             user_values['phone_number'] = processed_phone_number['phone_number']
         else:
             user_values['phone_number'] = phone_number
+    if 'merchant_category_id' in passvalues:
+        merchant_values['category_id'] = passvalues.pop('merchant_category_id')
+    if 'merchant_currency_id' in passvalues:
+        merchant_values['currency_id'] = passvalues.pop('merchant_currency_id')
     if 'merchant_name' in passvalues:
         merchant_values['name'] = passvalues.pop('merchant_name')
     if 'merchant_trading_name' in passvalues:

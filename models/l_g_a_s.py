@@ -65,8 +65,11 @@ def force_delete_lga(db: Session, id: int=0, commit: bool=False):
 def get_single_lga_by_id(db: Session, id: int=0):
     return db.query(LGA).filter_by(id = id).first()
 
-def get_lgas(db: Session):
-    return db.query(LGA).filter(LGA.deleted_at == None).order_by(desc(LGA.id))
+def get_lgas(db: Session, filters: Dict={}):
+    query = db.query(LGA).filter(LGA.deleted_at == None)
+    if 'state_id' in filters:
+        query = query.filter_by(state_id = filters['state_id'])
+    return query.order_by(desc(LGA.id))
 
 def get_lgas_by_state_id(db: Session, state_id: int=0):
     return db.query(LGA).filter(and_(LGA.deleted_at == None, LGA.state_id == state_id)).order_by(desc(LGA.id))

@@ -81,6 +81,5 @@ def get_categories(db: Session, filters: Dict={}):
         query = query.filter_by(created_by = filters['created_by'])
     if 'authorized_by' in filters:
         query = query.filter_by(authorized_by = filters['authorized_by'])
-        query = query.filter_by(deleted_at = filters['deleted_at'])
     return query.order_by(desc(Category.created_at))
 

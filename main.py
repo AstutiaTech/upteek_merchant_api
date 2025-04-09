@@ -6,20 +6,23 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi_pagination import add_pagination
 import sys, traceback
 
-
+from routers.misc import geo
+from routers.misc import merch
 from routers.authentication import auth
 from routers.user import profile
 from routers.media import file
 from routers.inventory import category
 
 #system routes
-from routers import seed
+# from routers import seed
 
 # Main app section here
 app = FastAPI(title="Upteek Merchant")
 
-app.include_router(seed.router)
+# app.include_router(seed.router)
 
+app.include_router(geo.router)
+app.include_router(merch.router)
 app.include_router(auth.router)
 app.include_router(profile.router)
 app.include_router(file.router)

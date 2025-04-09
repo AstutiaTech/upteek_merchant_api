@@ -15,6 +15,7 @@ class Merchant(Base):
     id = Column(BigInteger, primary_key=True, index=True)
     user_id = Column(BigInteger, default=0)
     category_id = Column(BigInteger, default=0)
+    currency_id = Column(BigInteger, default=0)
     name = Column(String, nullable=True)
     trading_name = Column(String, nullable=True)
     description = Column(Text, nullable=True)
@@ -40,7 +41,7 @@ class Merchant(Base):
     updated_at = Column(TIMESTAMP(timezone=True), nullable=True, onupdate=func.now())
 
 
-def create_merchant(db: Session, user_id: int = 0, category_id: int = 0, name: str = None, trading_name: str = None, description: str = None, email: str = None, phone_number_one: str = None, phone_number_two: str = None, opening_hours: str = None, closing_hours: str = None, logo: str = None, thumbnail: str = None, certificate: str = None, memorandum: str = None, utility_bill: str = None, building: str = None, compliance_status: int = 0, compliance_approved_by: int = 0, compliance_approved_at: str = None, compliance_rejected_by: int = 0, compliance_rejected_at: str = None, status: int = 0, commit: bool=False):
+def create_merchant(db: Session, user_id: int = 0, category_id: int = 0, currency_id: int = 0, name: str = None, trading_name: str = None, description: str = None, email: str = None, phone_number_one: str = None, phone_number_two: str = None, opening_hours: str = None, closing_hours: str = None, logo: str = None, thumbnail: str = None, certificate: str = None, memorandum: str = None, utility_bill: str = None, building: str = None, compliance_status: int = 0, compliance_approved_by: int = 0, compliance_approved_at: str = None, compliance_rejected_by: int = 0, compliance_rejected_at: str = None, status: int = 0, commit: bool=False):
     merchant = Merchant(user_id=user_id, category_id=category_id, name=name, trading_name=trading_name, description=description, email=email, phone_number_one=phone_number_one, phone_number_two=phone_number_two, opening_hours=opening_hours, closing_hours=closing_hours, logo=logo, thumbnail=thumbnail, certificate=certificate, memorandum=memorandum, utility_bill=utility_bill, building=building, compliance_status=compliance_status, compliance_approved_by=compliance_approved_by, compliance_approved_at=compliance_approved_at,compliance_rejected_by=compliance_rejected_by, compliance_rejected_at=compliance_rejected_at, status=status, created_at=get_laravel_datetime(), updated_at=get_laravel_datetime())
     db.add(merchant)
     if commit == False:

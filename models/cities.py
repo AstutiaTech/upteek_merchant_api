@@ -69,8 +69,11 @@ def get_single_city_by_id(db: Session, id: int=0):
 def get_capital_city(db: Session, state_id: int=0):
     return db.query(City).filter(and_(City.deleted_at == None, City.state_id == state_id, City.is_capital == 1)).first()
 
-def get_cities(db: Session):
-    return db.query(City).filter(City.deleted_at == None).order_by(desc(City.id))
+def get_cities(db: Session, filters: Dict={}):
+    query = db.query(City).filter(City.deleted_at == None)
+    if 'state_id' in filters:
+        query = query.filter_by(state_id = filters['state_id'])
+    return query.order_by(desc(City.id))
 
 def get_cities_by_state_id(db: Session, state_id: int=0):
     return db.query(City).filter(and_(City.deleted_at == None, City.state_id == state_id)).order_by(desc(City.id))
